@@ -34,8 +34,18 @@
         }
 
         input[type="file"] {
-            margin: 10px auto;
-            display: block;
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         button {
@@ -55,7 +65,9 @@
         <img id="logo" src="vacca_logo.png" alt="Vacca Trend Logo">
         <h1>Vacca Trend</h1>
         <form id="formulario">
+            <label for="arquivo" class="custom-file-upload">Escolher Imagem</label>
             <input type="file" id="arquivo" name="foto" accept="image/*" required>
+            <br>
             <button type="submit">Analisar Tendência</button>
         </form>
         <div id="resultado"></div>
