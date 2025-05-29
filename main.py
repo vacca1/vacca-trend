@@ -68,5 +68,6 @@ def arquivos_estaticos(nome_arquivo):
     return send_from_directory('.', nome_arquivo)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5000))  # Render usa uma variável de ambiente PORT
     app.run(debug=False, host='0.0.0.0', port=port)
+
