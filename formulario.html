@@ -109,7 +109,7 @@
       const formData = new FormData(formulario);
 
       try {
-        const res = await fetch('http://localhost:5000/analisar', {
+        const res = await fetch('/analisar', {
           method: 'POST',
           body: formData
         });
