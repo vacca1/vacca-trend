@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Vacca Trend</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      background-image: url('fundo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 400px;
+      margin: 80px auto;
+    }
+
+    img.logo {
+      width: 180px;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label.upload-label {
+      display: inline-block;
+      padding: 12px 25px;
+      color: #fff;
+      background-color: #2980b9;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #27ae60;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    #resposta {
+      margin-top: 25px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .call { color: #27ae60; }
+    .put { color: #e74c3c; }
+    .neutro { color: #f1c40f; }
+
+    #iconeResposta {
+      margin-top: 20px;
+      width: 100px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <img src="vacca_logo.png" class="logo" alt="Logo do Sistema"><br>
+
+    <form id="formulario" enctype="multipart/form-data">
+      <label for="arquivo" class="upload-label">📤 Enviar gráfico</label>
+      <input type="file" id="arquivo" name="foto" accept="image/*" required>
+      <br><br>
+      <button type="submit">🔍 Analisar Tendência</button>
+    </form>
+
+    <p id="resposta"></p>
+    <img id="iconeResposta" src="" alt="">
+  </div>
+
+  <script>
+    const formulario = document.getElementById('formulario');
+    const resposta = document.getElementById('resposta');
+    const iconeResposta = document.getElementById('iconeResposta');
+
+    formulario.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const fileInput = document.getElementById('arquivo');
+
+      if (!fileInput.files.length) {
+        resposta.innerHTML = '<span class="neutro">Escolha uma imagem antes de enviar.</span>';
+        iconeResposta.style.display = 'none';
+        return;
+      }
+
+      const formData = new FormData(formulario);
+
+      try {
+        const res = await fetch('http://localhost:5000/analisar', {
+          method: 'POST',
+          body: formData
+        });
+
+        const dados = await res.json();
+
+        let classe = 'neutro';
+        let imagem = 'neutro.jpg';
+
+        if (dados.sinal === 'CALL') {
+          classe = 'call';
+          imagem = 'call.jpg';
+        } else if (dados.sinal === 'PUT') {
+          classe = 'put';
+          imagem = 'put.jpg';
+        }
+
+        resposta.innerHTML = ``;
+        iconeResposta.src = imagem;
+        iconeResposta.style.display = 'block';
+
+      } catch (erro) {
+        resposta.innerHTML = '<span class="neutro">Erro de comunicação com o servidor</span>';
+        iconeResposta.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

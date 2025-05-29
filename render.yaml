@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: vacca-trend
+    env: python
+    buildCommand: ""
+    startCommand: "python main.py"
+    envVars:
+      - key: FLASK_ENV
+        value: production
